@@ -1,3 +1,1 @@
-REPEAT_KEY_ENABLE = yes
 BOOTLOADER = atmel-dfu
-MOUSEKEY_ENABLE=yes

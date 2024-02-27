@@ -14,13 +14,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                          __LULU_QWE_DN__,                         //
                          LULU_TH_WRAP(__QWE_TH_L__, __QWE_TH_R__) //
                          ),
-
-    [_CDH] = LAYOUT_wrap(LULU_WRAP(__NUM_MD_L__, __NUM_MD_R__),   //
-                         LULU_WRAP(__CDH_UP_L__, __CDH_UP_R__),   //
-                         __LULU_CDH_MD__,                         //
-                         __LULU_CDH_DN__,                         //
-                         LULU_TH_WRAP(__CDH_TH_L__, __CDH_TH_R__) //
-                         ),
     [_NAV] = LAYOUT_wrap(LULU_WRAP(__FNC_MD_L__, __FNC_MD_R__),    //
                          LULU_WRAP(__NAV_UP_L__, __NAV_UP_R__),    //
                          LULU_WRAP(__NAV_MD_L__, __NAV_MD_R__),    //
@@ -54,36 +47,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-#ifdef RGB_MATRIX_ENABLE
-void keyboard_post_init_useR(void) {
-    rgblight_enable_noeeprom(); // Enables RGB, without saving settings
-    rgblight_sethsv_noeeprom(255, 255, 255);
+void keyboard_post_init_user(void) {
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_set_color_all(0, 0, 255);
 }
-#endif
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     state = update_tri_layer_state(state, _NAV, _SYM, _NUM);
-#ifdef RGB_MATRIX_ENABLE
     switch (get_highest_layer(state)) {
+        case _QWE:
+            rgb_matrix_set_color_all(255, 255, 255);
+            break;
         case _NAV:
-            rgblight_sethsv(200, 255, 255);
+            rgb_matrix_set_color_all(200, 255, 255);
             break;
         case _SYM:
-            rgblight_sethsv(255, 200, 255);
+            rgb_matrix_set_color_all(255, 200, 255);
             break;
         case _NUM:
-            rgblight_sethsv(255, 255, 200);
+            rgb_matrix_set_color_all(255, 255, 200);
             break;
         case _FNC:
-            rgblight_sethsv(200, 200, 255);
+            rgb_matrix_set_color_all(200, 200, 255);
             break;
         case _MSE:
-            rgblight_sethsv(255, 200, 200);
+            rgb_matrix_set_color_all(255, 200, 200);
             break;
         default:
-            rgblight_sethsv(255, 255, 255); // Blue
+            rgb_matrix_set_color_all(255, 255, 255);
             break;
     }
-#endif
+    rgb_matrix_update_pwm_buffers();
     return state;
 }
